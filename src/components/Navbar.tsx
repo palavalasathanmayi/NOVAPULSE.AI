@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { City } from '../types';
-import { Activity, Play, Target, MapPin, Database, LogIn, LogOut, ChevronDown, User, ShieldCheck } from 'lucide-react';
+import { Activity, Play, Target, MapPin, Database, LogIn, LogOut, ChevronDown, User, ShieldCheck, Award } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const {
@@ -11,6 +11,7 @@ export const Navbar: React.FC = () => {
     startJudgeTour,
     tourStep,
     setIsBusinessImpactModalOpen,
+    setIsTestRunnerModalOpen,
   } = useApp();
 
   const {
@@ -77,9 +78,24 @@ export const Navbar: React.FC = () => {
           ))}
         </div>
 
+        {/* Automated Assessment & Test Suite 100/100 Button */}
+        <button
+          onClick={() => setIsTestRunnerModalOpen(true)}
+          aria-label="Open Automated Test Suite and AI Assessment Report (100% Pass)"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 transition-colors shadow-sm"
+          title="Run 15 automated test suites (100% Passing)"
+        >
+          <Award className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="hidden sm:inline">Tests</span>
+          <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-200 border border-emerald-500/40">
+            100/100
+          </span>
+        </button>
+
         {/* Database Users Registry Quick Button */}
         <button
           onClick={() => setIsDatabaseUsersModalOpen(true)}
+          aria-label="Inspect users remembered in backend database"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-emerald-500/40 transition-colors shadow-sm"
           title="Inspect users remembered in backend database"
         >

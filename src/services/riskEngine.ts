@@ -37,10 +37,14 @@ export function calculateCustomerRisk(customer: Customer, referenceDateStr: stri
   const deliveryRaw = Math.min(100, Math.round(deliveryProblemRatio * 140 + (customer.deliveryDelayedOrdersCount > 0 ? 30 : 0)));
 
   // 4. Unavailable Products Factor (15% weight):
-  const unavailableScore = Math.min(100, customer.unavailableProductOrdersCount * 35 + customer.searchesForUnavailableCount * 12);
+  const unavailableOrders = customer.unavailableProductOrdersCount || 0;
+  const unavailableSearches = customer.searchesForUnavailableCount || 0;
+  const unavailableScore = Math.min(100, unavailableOrders * 35 + unavailableSearches * 12);
 
   // 5. Support & Refund Issues Factor (10% weight):
-  const supportRaw = Math.min(100, customer.supportTicketsCount * 40 + customer.refundsCount * 30);
+  const supportTickets = customer.supportTicketsCount || 0;
+  const refunds = customer.refundsCount || 0;
+  const supportRaw = Math.min(100, supportTickets * 40 + refunds * 30);
 
   // Weighted Combination
   const weightedScore = (
@@ -74,25 +78,25 @@ export function calculateCustomerRisk(customer: Customer, referenceDateStr: stri
       name: 'Order Cancellation History',
       score: Math.round(cancellationRaw),
       weightedContribution: cancellationRaw * 0.25,
-      evidence: `${customer.cancelledOrdersCount} cancelled order(s) out of ${customer.totalOrders} total orders (${Math.round(cancellationRatio * 100)}% failure)`,
+      evidence: `${customer.cancelledOrdersCount || 0} cancelled order(s) out of ${customer.totalOrders || 0} total orders (${Math.round(cancellationRatio * 100)}% failure)`,
     },
     {
       name: 'Delivery Delay Encounters',
       score: Math.round(deliveryRaw),
       weightedContribution: deliveryRaw * 0.20,
-      evidence: `${customer.deliveryDelayedOrdersCount} delivery delay incident(s) exceeding promised ETA`,
+      evidence: `${customer.deliveryDelayedOrdersCount || 0} delivery delay incident(s) exceeding promised ETA`,
     },
     {
       name: 'Product Availability Issues',
       score: Math.round(unavailableScore),
       weightedContribution: unavailableScore * 0.15,
-      evidence: `${customer.unavailableProductOrdersCount} stockout event(s) and ${customer.searchesForUnavailableCount} phantom out-of-stock searches`,
+      evidence: `${unavailableOrders} stockout event(s) and ${unavailableSearches} phantom out-of-stock searches`,
     },
     {
       name: 'Support & Refund Friction',
       score: Math.round(supportRaw),
       weightedContribution: supportRaw * 0.10,
-      evidence: `${customer.supportTicketsCount} opened support ticket(s) and ${customer.refundsCount} refund claim(s)`,
+      evidence: `${supportTickets} opened support ticket(s) and ${refunds} refund claim(s)`,
     },
   ];
 
@@ -109,7 +113,7 @@ export function calculateCustomerRisk(customer: Customer, referenceDateStr: stri
   let discountJustified = false;
   let discountRationale = '';
 
-  const acquiredViaDiscount = customer.acquisitionChannel === 'Discount Coupon' || customer.firstOrderDiscountPercent >= 35;
+  const acquiredViaDiscount = customer.acquisitionChannel === 'Discount Coupon' || (customer.firstOrderDiscountPercent || 0) >= 35;
 
   if (unavailableScore >= 60 || factors[0].name === 'Product Availability Issues') {
     recommendationType = 'Availability Recovery';
@@ -122,7 +126,7 @@ export function calculateCustomerRisk(customer: Customer, referenceDateStr: stri
     whyRecommended = 'Customer churn is primarily driven by catalog stockouts and phantom inventory listings. Offering a discount coupon would not solve underlying product availability and would exacerbate margin erosion.';
     discountJustified = false;
     discountRationale = 'Discounts are withheld: case data indicates that coupon seekers have higher churn, and customer issue is strictly operational availability.';
-  } else if (deliveryRaw >= 50 || factors[0].name === 'Delivery Delay Encounters' || customer.deliveryDelayedOrdersCount >= 2) {
+  } else if (deliveryRaw >= 50 || factors[0].name === 'Delivery Delay Encounters' || (customer.deliveryDelayedOrdersCount || 0) >= 2) {
     recommendationType = 'Reliability Recovery';
     recommendedActions = [
       'Send personalized CX outreach acknowledging recent delivery friction and explaining route optimizations',
@@ -131,7 +135,7 @@ export function calculateCustomerRisk(customer: Customer, referenceDateStr: stri
       'Resolve any pending support ticket within 2 hours',
     ];
     whyRecommended = 'Customer had multiple orders delivered significantly past estimated window. Re-establishing trust in delivery punctuality is 3.2x more effective than promotional markdowns.';
-    discountJustified = customer.refundsCount > 0 && !acquiredViaDiscount;
+    discountJustified = (customer.refundsCount || 0) > 0 && !acquiredViaDiscount;
     discountRationale = discountJustified
       ? 'A minor ₹50 service assurance credit is approved exclusively to settle open refund friction for an organically acquired customer.'
       : 'No coupon: repeated discounts train users to wait for subsidies without fixing SLA confidence.';
@@ -145,7 +149,7 @@ export function calculateCustomerRisk(customer: Customer, referenceDateStr: stri
     whyRecommended = 'Cancellations destroy customer trust faster than any other friction point. Immediate operational assurance is required.';
     discountJustified = false;
     discountRationale = 'Preserve margins: resolve the cancellation trauma via prompt human touch and instant refund rather than price cuts.';
-  } else if (customer.categoriesUsed.length === 1 && customer.totalOrders >= 2) {
+  } else if ((customer.categoriesUsed?.length || 0) === 1 && customer.totalOrders >= 2) {
     recommendationType = 'Category Diversification';
     recommendedActions = [
       'Recommend high-velocity complementary categories (e.g. Fresh Dairy & Bakery alongside Staples)',
@@ -188,3 +192,37 @@ export function calculateCustomerRisk(customer: Customer, referenceDateStr: stri
     discountRationale,
   };
 }
+
+/**
+ * Explains root cause drivers for customer risk
+ */
+export function explainCustomerRisk(customer: Customer, referenceDateStr: string = '2026-10-01') {
+  const analysis = calculateCustomerRisk(customer, referenceDateStr);
+  return {
+    customerId: customer.id,
+    customerName: customer.name,
+    score: analysis.score,
+    level: analysis.level,
+    primaryDriver: analysis.topDrivers[0] || 'Operational Friction',
+    topDrivers: analysis.topDrivers,
+    evidence: analysis.evidence,
+    impactDescription: `${customer.name} exhibits ${analysis.level.toLowerCase()} churn risk with ${analysis.topDrivers.join(', ')}.`,
+  };
+}
+
+/**
+ * Generates tailored operational intervention recommendations (enforcing non-discount philosophy)
+ */
+export function recommendCustomerIntervention(customer: Customer, referenceDateStr: string = '2026-10-01') {
+  const analysis = calculateCustomerRisk(customer, referenceDateStr);
+  return {
+    customerId: customer.id,
+    customerName: customer.name,
+    actionType: analysis.recommendationType,
+    recommendedActions: analysis.recommendedActions,
+    whyRecommended: analysis.whyRecommended,
+    discountJustified: analysis.discountJustified,
+    discountRationale: analysis.discountRationale,
+  };
+}
+

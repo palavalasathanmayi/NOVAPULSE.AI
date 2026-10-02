@@ -215,3 +215,90 @@ export const OPERATIONAL_METRICS_BREAKDOWN = {
   supportRefundOrdersTotal: 2310, // 6% of 38,500
   avgSupportResolutionHours: 9.2,
 };
+
+export const BUSINESS_CASE_FACTS = {
+  partnerStoresCount: 620,
+  registeredUsersCurrent: 120000,
+  registeredUsersPrevious: 82000,
+  monthlyActiveUsersCurrent: 46000,
+  monthlyActiveUsersPrevious: 39000,
+  monthlyOrdersCurrent: 38500,
+  monthlyOrdersPrevious: 31200,
+  averageOrderValueCurrent: 486,
+  averageOrderValuePrevious: 452,
+  monthlyRevenueLakhsCurrent: 26.1,
+  monthlyRevenueLakhsPrevious: 21.8,
+  repeatPurchaseRateCurrent: 27,
+  repeatPurchaseRatePrevious: 41,
+  averageDeliveryMinutesCurrent: 37,
+  averageDeliveryMinutesPrevious: 29,
+  cancellationRateCurrent: 11,
+  cancellationRatePrevious: 6,
+  supportTicketsMonthlyCurrent: 5900,
+  supportTicketsMonthlyPrevious: 3100,
+  promotionalSpendLakhsCurrent: 17.0,
+  promotionalSpendLakhsPrevious: 9.5,
+};
+
+export const CUSTOMER_SURVEY_EVIDENCE_STATS = {
+  pricesOrFeesHigherThanExpected: 38,
+  deliveryTooSlow: 34,
+  productsUnavailableAfterOrdering: 29,
+  discountsConfusing: 24,
+  preferNearbyStoresDirectly: 21,
+  difficultToDiscoverLocalProducts: 18,
+  refundProblems: 16,
+  appCluttered: 14,
+  trackingInaccurate: 11,
+};
+
+export const BEHAVIORAL_EVIDENCE = {
+  churnedUsersWithHighRatingPercent: 61,
+  newUserFirstOrderCompletionPercent: 54,
+  secondOrderWithin30DaysPercent: 31,
+  threeOrdersRepeatProbabilityPercent: 72,
+  couponsUnredeemedPercent: 44,
+  repeatedlySearchUnavailablePercent: 19,
+};
+
+export const OPERATIONAL_EVIDENCE = {
+  ordersCancelledPercent: 11,
+  ordersArriveLateMoreThan15MinPercent: 13,
+  ordersWithSubstitutionsPercent: 8,
+  ordersWithRefundsOrTicketsPercent: 6,
+};
+
+export const CANCELLATION_REASONS_STATS = {
+  unavailableProductsPercent: 35,
+  deliveryDelaysPercent: 27,
+  storeRejectionPercent: 18,
+  unavailableDeliveryPartnersPercent: 12,
+  otherPercent: 8,
+};
+
+export const PARTNER_STORE_EVIDENCE_STATS = {
+  valueNovaCartCustomersPercent: 46,
+  inventoryMaintenanceTooMuchEffortPercent: 39,
+  promotionsReduceMarginsPercent: 31,
+  struggleWithDemandPredictionPercent: 28,
+  rejectOrdersWhenBusyPercent: 23,
+  consideringLeavingWithinYearPercent: 18,
+};
+
+export const PILOT_BUDGET_ALLOCATION = [
+  { phase: 'Phase 1', title: 'Data Integration & Command Center', amountLakhs: 7.5 },
+  { phase: 'Phase 2', title: 'Customer Risk Engine & Root Cause Engine', amountLakhs: 6.5 },
+  { phase: 'Phase 3', title: 'Store Intelligence & Operations Workflows', amountLakhs: 5.5 },
+  { phase: 'Phase 4', title: 'Full Pilot Rollout & KPI Measurement', amountLakhs: 5.5 },
+];
+
+export const TARGET_ROADMAP = {
+  repeatPurchaseTargetPercent: 36.0,
+  cancellationRateTargetPercent: 6.5,
+  averageDeliveryMinutesTarget: 28,
+  inventoryAccuracyTargetPercent: 92.0,
+  storeOrderAcceptanceTargetPercent: 94.0,
+  monthlySupportTicketsTarget: 2400,
+  refundDisputesTargetPercent: 2.2,
+};
+
