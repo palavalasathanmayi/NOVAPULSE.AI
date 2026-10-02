@@ -1,0 +1,6 @@
+{
+  "name": "NOVA PULSE — Retention & Reliability Command Center",
+  "description": "Turn operational friction into customer retention. AI-Powered Local Commerce Retention & Reliability Command Center for NOVA CART: Detect, Explain, Recommend, Act, Resolve, Measure.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "usr_muqn7ch6_x1g5",
+    "name": "rohan.g",
+    "email": "rohan.g@gmail.com",
+    "picture": "https://api.dicebear.com/7.x/initials/svg?seed=Rohan%20Gupta",
+    "role": "Retention Analyst",
+    "createdAt": "2026-10-02T07:29:34.698Z",
+    "lastLoginAt": "2026-10-02T07:29:38.269Z",
+    "loginCount": 2,
+    "provider": "google"
+  },
+  {
+    "id": "usr_owner_01",
+    "name": "Thanmayi P",
+    "email": "p.thanmayi09@gmail.com",
+    "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+    "role": "Executive Admin",
+    "createdAt": "2026-09-01T08:00:00.000Z",
+    "lastLoginAt": "2026-10-02T07:29:31.197Z",
+    "loginCount": 5,
+    "provider": "google"
+  },
+  {
+    "id": "usr_ops_02",
+    "name": "Aravind Subramanian",
+    "email": "aravind.s@novacart.internal",
+    "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+    "role": "Area Operations Commander",
+    "createdAt": "2026-09-05T09:30:00.000Z",
+    "lastLoginAt": "2026-10-01T18:45:00.000Z",
+    "loginCount": 14,
+    "provider": "google"
+  },
+  {
+    "id": "usr_merchant_03",
+    "name": "Ritu Nambiar",
+    "email": "ritu.n@novacart.internal",
+    "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+    "role": "Merchant Success Lead",
+    "createdAt": "2026-09-10T11:15:00.000Z",
+    "lastLoginAt": "2026-10-01T16:20:00.000Z",
+    "loginCount": 9,
+    "provider": "google"
+  }
+]
